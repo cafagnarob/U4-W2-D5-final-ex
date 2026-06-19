@@ -60,7 +60,7 @@ public class Application {
         Utente u8FromDB = null;
         Utente u9FromDB = null;
         Utente u10FromDB = null;
-
+        
 
         try {
             u1FromDB = utenteDAO.getById(1L);

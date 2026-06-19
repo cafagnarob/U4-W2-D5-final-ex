@@ -49,6 +49,7 @@ public class Application {
         utenteDAO.save(u10);*/
 
         //prendo gli utenti dal DB
+        System.out.println("----RECUPERO GLI UTENTI DAL DB-------");
         Utente u1FromDB = null;
         Utente u2FromDB = null;
         Utente u3FromDB = null;
@@ -162,6 +163,7 @@ public class Application {
 
         //prendo i libri e le riviste dal DB
         //LIBRI
+        System.out.println("----RECUPERO I LIBRI DAL DB-------");
         Elemento l1FromDB = null;
         Elemento l2FromDB = null;
         Elemento l3FromDB = null;
@@ -227,6 +229,7 @@ public class Application {
 
 
         //riviste
+        System.out.println("----RECUPERO LE RIVISTE DAL DB-------");
 
         Elemento r1FromDB = null;
         Elemento r2FromDB = null;
@@ -316,6 +319,7 @@ public class Application {
         prestitoDAO.save(p10);*/
 
         //prendo i prestiti dal DB
+        System.out.println("----RECUPERO I PRESTITI DAL DB-------");
         Prestito p1FromDB = null;
         Prestito p2FromDB = null;
         Prestito p3FromDB = null;
@@ -386,10 +390,12 @@ public class Application {
 
 
         // ricerca per anno di pubblicazione
+        System.out.println("----RICERCA PER ANNO DI PUBBLICAZIONE -------");
 
         elementoDAO.ricercaPerAnno(2024);
 
         // ricerca per autore
+        System.out.println("----RICERCA PER AUTORE -------");
         try {
             elementoDAO.ricercaPerAutore("J.K. Rowling");
         } catch (NotFoundException e) {
@@ -398,6 +404,7 @@ public class Application {
 
 
         //ricerca per titolo completo
+        System.out.println("----RICERCA PER TITOLO COMPLETO -------");
         try {
             elementoDAO.ricercaPerTitolo("Il piccolo principe");
         } catch (NotFoundException e) {
@@ -405,6 +412,7 @@ public class Application {
         }
 
         // ricerca titolo parziale
+        System.out.println("----RICERCA PER TITOLO PARZIALE -------");
         try {
             elementoDAO.ricercaPerTitolo("il picc");
         } catch (NotFoundException e) {
@@ -413,6 +421,7 @@ public class Application {
 
 
         // ricerca elementi in prestito data n tessera
+        System.out.println("----RICERCA ELEMENTI IN PRESTITO PER NUMERO DI TESSERA -------");
         try {
             prestitoDAO.elementiInPrestitoPerTessera("TESS001");
         } catch (NotFoundException e) {
@@ -420,6 +429,8 @@ public class Application {
         }
 
         // ricerca prestiti scaduti e non restituiti
+        System.out.println("----RICERCA PRESTITI SCADUTI E NON RESTITUITI -------");
+
         prestitoDAO.prestitiScaduti();
 
     }

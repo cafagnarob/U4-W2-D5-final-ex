@@ -11,6 +11,8 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
 
+import java.time.LocalDate;
+
 public class Application {
 
     private static final EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("u4-w3-d5pu");
@@ -57,6 +59,7 @@ public class Application {
         Utente u8FromDB = null;
         Utente u9FromDB = null;
         Utente u10FromDB = null;
+
 
         try {
             u1FromDB = utenteDAO.getById(1L);
@@ -108,7 +111,6 @@ public class Application {
         } catch (NotFoundException e) {
             System.out.println(e.getMessage());
         }
-
 
         // LIBRI
         /*Libro l1 = new Libro("ISBN001", "Il nome della rosa", 1980, 500, "Umberto Eco", "Storico");
@@ -291,7 +293,7 @@ public class Application {
 
         // PRESTITI
 
-       /* Prestito p1 = new Prestito(u1FromDB, l1FromDB, LocalDate.of(2026, 5, 10), null);
+        Prestito p1 = new Prestito(u1FromDB, l1FromDB, LocalDate.of(2026, 5, 10), null);
         Prestito p2 = new Prestito(u2FromDB, l2FromDB, LocalDate.of(2026, 5, 15), null);
         Prestito p3 = new Prestito(u3FromDB, l3FromDB, LocalDate.of(2026, 4, 20), LocalDate.of(2026, 5, 5));
         Prestito p4 = new Prestito(u4FromDB, l4FromDB, LocalDate.of(2026, 6, 1), null);
@@ -302,7 +304,6 @@ public class Application {
         Prestito p8 = new Prestito(u8FromDB, r3FromDB, LocalDate.of(2026, 6, 10), null);
         Prestito p9 = new Prestito(u9FromDB, l6FromDB, LocalDate.of(2026, 4, 28), LocalDate.of(2026, 5, 20));
         Prestito p10 = new Prestito(u10FromDB, r4FromDB, LocalDate.of(2026, 6, 5), null);
-*/
         /*prestitoDAO.save(p1);
         prestitoDAO.save(p2);
         prestitoDAO.save(p3);
@@ -376,32 +377,50 @@ public class Application {
             System.out.println(e.getMessage());
         }
 
+        // rimuovi dal catalogo con codice ISBN
+        try {
+            elementoDAO.delete("ISBN010");
+        } catch (NotFoundException e) {
+            System.out.println(e.getMessage());
+        }
+
 
         // ricerca per anno di pubblicazione
 
         elementoDAO.ricercaPerAnno(2024);
 
         // ricerca per autore
-
-        elementoDAO.ricercaPerAutore("J.K. Rowling");
+        try {
+            elementoDAO.ricercaPerAutore("J.K. Rowling");
+        } catch (NotFoundException e) {
+            System.out.println(e.getMessage());
+        }
 
 
         //ricerca per titolo completo
-
-        elementoDAO.ricercaPerTitolo("Il piccolo principe");
+        try {
+            elementoDAO.ricercaPerTitolo("Il piccolo principe");
+        } catch (NotFoundException e) {
+            System.out.println(e.getMessage());
+        }
 
         // ricerca titolo parziale
+        try {
+            elementoDAO.ricercaPerTitolo("il picc");
+        } catch (NotFoundException e) {
+            System.out.println(e.getMessage());
+        }
 
-        elementoDAO.ricercaPerTitolo("il picc");
 
         // ricerca elementi in prestito data n tessera
         try {
-            prestitoDAO.elementiInPrestitoPerTessera("TESS0011");
+            prestitoDAO.elementiInPrestitoPerTessera("TESS001");
         } catch (NotFoundException e) {
-            throw new NotFoundException(e.getMessage());
+            System.out.println(e.getMessage());
         }
 
-        elementoDAO.ricercaPerTitolo("il picc");
+        // ricerca prestiti scaduti e non restituiti
+        prestitoDAO.prestitiScaduti();
 
     }
 

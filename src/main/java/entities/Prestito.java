@@ -39,7 +39,7 @@ public class Prestito {
         this.elementoPrestato = elementoPrestato;
         this.dataInizioPrestito = dataInizioPrestito;
         this.dataRestituzionePrevista = dataInizioPrestito.plusDays(30);
-        this.dataRestituzioneEffettiva = null;
+        this.dataRestituzioneEffettiva = dataRestituzioneEffettiva;
     }
 
     public Long getId() {
@@ -58,11 +58,11 @@ public class Prestito {
         return dataRestituzionePrevista;
     }
 
-    public LocalDate getGetDataRestituzioneEffettiva() {
+    public LocalDate getDataRestituzioneEffettiva() {
         return dataRestituzioneEffettiva;
     }
 
-    public void setGetDataRestituzioneEffettiva(LocalDate getDataRestituzioneEffettiva) {
+    public void setDataRestituzioneEffettiva(LocalDate getDataRestituzioneEffettiva) {
         this.dataRestituzioneEffettiva = getDataRestituzioneEffettiva;
     }
 

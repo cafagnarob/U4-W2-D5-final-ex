@@ -67,7 +67,7 @@ public class ElementoDAO {
         List<Elemento> fromDB = this.entityManager.createQuery(
                         "SELECT e FROM Elemento e WHERE LOWER(e.titolo) LIKE LOWER(:param)", Elemento.class)
                 .setParameter("param", "%" + titolo + "%").getResultList();
-        if (fromDB == null) throw new NotFoundException(" elemento non trovato");
+        if (fromDB.isEmpty()) throw new NotFoundException("titolo non trovato");
         System.out.println("ELEMENTO RICHIESTO" + fromDB);
         return fromDB;
     }
@@ -75,11 +75,17 @@ public class ElementoDAO {
 
     //ricerca per autore
     public List<Libro> ricercaPerAutore(String autore) {
+
         TypedQuery<Libro> query = this.entityManager.createNamedQuery("Libro.ricercaPerAutore", Libro.class
         );
         query.setParameter("param", autore);
+        List<Libro> res = query.getResultList();
+        if (res.isEmpty()) {
+            throw new NotFoundException("nessun autore trovato");
+        }
         System.out.println("LISTA LIBRI PUBBLICATI DA" + autore + ": " + query.getResultList());
-        return query.getResultList();
+        return res;
+
     }
 
 

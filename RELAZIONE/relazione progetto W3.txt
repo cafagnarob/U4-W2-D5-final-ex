@@ -1,0 +1,29 @@
+il programma è organizzato attorno a quattro entità principali; Elemento (classa astratta),
+le classe figlie di Elemento: Libro e Rivista e infine le entità Utente e Prestito. 
+
+Per la gestione delle ereditarietà tra Elemento e i figli Libri e Rivista ho usato una strategia "JOINED"
+Questa strategia è stata preferita perché garantisce:
+PRO 
+- evita la creazione di numerosi null nelle tabelle o di colonne ridondanti.
+- è più scalabile
+
+CONTRO
+- richiede una JOIN in fase di lettura
+
+
+questa scelta mi riporta tre tabelle distinte: 
+- elemento_a_catalogo tabella padre con i campi comuni: -id, -codiceISBN, -titolo, -annoPubblicazione, -numeroPagine
+-Libro contiene solo gli attributi di libro: -autore, -periodicità 
+-Rivista contiene solo gli attributi di rivista: -periodicità
+queste tre tabelle sono collegate tramite la chiave primaria alla tabella padre con una relazione 1:1 sulla chiave dell ID. 
+
+
+Per quanto riguarda Prestito e il collegamento tra Utente e Elemento ho utilizzato due relazioni di  @Many_to_one.
+(elemento_id e utente_id, entrambi obbligatorie) 
+-----RAGIONAMENTO-----
+un utente può avere più prestiti (sparsi nel tempo) e allo stesso tempo un elemento del catalogo può essere oggetto di 
+più prestiti (sparsi nel tempo) ad esempio restituito e quindi nuovo dato in prestito.
+
+si tratta quindi di due realizione 1:N vista dal lato di Utente e Elemento (naturalmente sono N:1 se viste dal lato del Prestito).
+
+ 

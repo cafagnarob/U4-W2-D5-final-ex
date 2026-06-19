@@ -5,6 +5,7 @@ import entities.Libro;
 import exception.NotFoundException;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
+import jakarta.persistence.NoResultException;
 import jakarta.persistence.TypedQuery;
 
 import java.util.List;
@@ -27,16 +28,18 @@ public class ElementoDAO {
 
     // find
     public Elemento getByISBN(String codiceISBN) {
-        Elemento fromDB = this.entityManager.createQuery(
-                        "SELECT e FROM Elemento e WHERE e.codiceISBN = :param",
-                        Elemento.class
-                )
-                .setParameter("param", codiceISBN)
-                .getSingleResult();
-        if (fromDB == null) throw new NotFoundException(" elemento non trovato");
-        System.out.println("ELEMENTO RICHIESTO" + fromDB);
-        return fromDB;
-
+        try {
+            Elemento fromDB = this.entityManager.createQuery(
+                            "SELECT e FROM Elemento e WHERE e.codiceISBN = :param",
+                            Elemento.class
+                    )
+                    .setParameter("param", codiceISBN)
+                    .getSingleResult();
+            System.out.println("ELEMENTO RICHIESTO" + fromDB);
+            return fromDB;
+        } catch (NoResultException e) {
+            throw new NotFoundException("Elemento non trovato con ISBN: " + codiceISBN);
+        }
     }
 
     //delete
@@ -52,7 +55,7 @@ public class ElementoDAO {
     //ricerca per anno di pubblicazione
     public List<Elemento> ricercaPerAnno(int annoDiPubblicazione) {
         TypedQuery<Elemento> query = this.entityManager.createQuery(
-                "SELECT e FROM Elemento e WHERE e.annoDiPubblicazione = :param", Elemento.class
+                "SELECT e FROM Elemento e WHERE e.annoPubblicazione = :param", Elemento.class
         );
         query.setParameter("param", annoDiPubblicazione);
         System.out.println("LISTA ELEMENTI PUBBLICATI NEL" + annoDiPubblicazione + ": " + query.getResultList());
@@ -62,7 +65,7 @@ public class ElementoDAO {
     //ricerca per titolo o parte
     public List<Elemento> ricercaPerTitolo(String titolo) {
         List<Elemento> fromDB = this.entityManager.createQuery(
-                        "SELECT e FROM Elemento e WHERE LOWER(e.titolo) LIKE LOWER(:parma)", Elemento.class)
+                        "SELECT e FROM Elemento e WHERE LOWER(e.titolo) LIKE LOWER(:param)", Elemento.class)
                 .setParameter("param", "%" + titolo + "%").getResultList();
         if (fromDB == null) throw new NotFoundException(" elemento non trovato");
         System.out.println("ELEMENTO RICHIESTO" + fromDB);

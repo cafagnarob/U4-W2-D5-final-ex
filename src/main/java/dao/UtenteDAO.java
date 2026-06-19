@@ -4,6 +4,7 @@ import entities.Utente;
 import exception.NotFoundException;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
+import jakarta.persistence.NoResultException;
 
 public class UtenteDAO {
     private final EntityManager entityManager;
@@ -29,6 +30,21 @@ public class UtenteDAO {
         System.out.println("UTENTE RICHIESTO" + fromDB);
         return fromDB;
 
+    }
+
+    //find utente dalla tessera
+    public Utente findByTessera(String tessera) {
+        try {
+            return entityManager.createQuery(
+                            "SELECT u FROM Utente u WHERE u.numeroDitessera = :tessera",
+                            Utente.class
+                    )
+                    .setParameter("tessera", tessera)
+                    .getSingleResult();
+
+        } catch (NoResultException e) {
+            return null;
+        }
     }
 
     //delete

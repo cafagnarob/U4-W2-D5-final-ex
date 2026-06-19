@@ -9,7 +9,7 @@ import jakarta.persistence.NamedQuery;
 @NamedQueries({
         @NamedQuery(
                 name = "Libro.ricercaPerAutore",
-                query = "SELECT e FROM Elemento e WHERE e.autore = :param"
+                query = "SELECT l FROM Libro l WHERE l.autore = :param"
         )
 })
 public class Libro extends Elemento {

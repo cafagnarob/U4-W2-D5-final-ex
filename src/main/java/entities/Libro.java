@@ -2,8 +2,16 @@ package entities;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.NamedQueries;
+import jakarta.persistence.NamedQuery;
 
 @Entity
+@NamedQueries({
+        @NamedQuery(
+                name = "Libro.ricercaPerAutore",
+                query = "SELECT e FROM Elemento e WHERE e.autore = :param"
+        )
+})
 public class Libro extends Elemento {
     @Column(nullable = false)
     private String autore;

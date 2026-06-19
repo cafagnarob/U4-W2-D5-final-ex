@@ -1,9 +1,11 @@
 package dao;
 
 import entities.Elemento;
+import entities.Libro;
 import exception.NotFoundException;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
+import jakarta.persistence.TypedQuery;
 
 import java.util.List;
 
@@ -25,7 +27,12 @@ public class ElementoDAO {
 
     // find
     public Elemento getByISBN(String codiceISBN) {
-        Elemento fromDB = this.entityManager.find(Elemento.class, id);
+        Elemento fromDB = this.entityManager.createQuery(
+                        "SELECT e FROM Elemento e WHERE e.codiceISBN = :param",
+                        Elemento.class
+                )
+                .setParameter("param", codiceISBN)
+                .getSingleResult();
         if (fromDB == null) throw new NotFoundException(" elemento non trovato");
         System.out.println("ELEMENTO RICHIESTO" + fromDB);
         return fromDB;
@@ -43,7 +50,34 @@ public class ElementoDAO {
     }
 
     //ricerca per anno di pubblicazione
-    public List<Elemento> listaRicercaPerAnno(int annoDiPubblicazione) {
-        
+    public List<Elemento> ricercaPerAnno(int annoDiPubblicazione) {
+        TypedQuery<Elemento> query = this.entityManager.createQuery(
+                "SELECT e FROM Elemento e WHERE e.annoDiPubblicazione = :param", Elemento.class
+        );
+        query.setParameter("param", annoDiPubblicazione);
+        System.out.println("LISTA ELEMENTI PUBBLICATI NEL" + annoDiPubblicazione + ": " + query.getResultList());
+        return query.getResultList();
     }
+
+    //ricerca per titolo o parte
+    public List<Elemento> ricercaPerTitolo(String titolo) {
+        List<Elemento> fromDB = this.entityManager.createQuery(
+                        "SELECT e FROM Elemento e WHERE LOWER(e.titolo) LIKE LOWER(:parma)", Elemento.class)
+                .setParameter("param", "%" + titolo + "%").getResultList();
+        if (fromDB == null) throw new NotFoundException(" elemento non trovato");
+        System.out.println("ELEMENTO RICHIESTO" + fromDB);
+        return fromDB;
+    }
+
+
+    //ricerca per autore
+    public List<Libro> ricercaPerAutore(String autore) {
+        TypedQuery<Libro> query = this.entityManager.createNamedQuery("Libro.ricercaPerAutore", Libro.class
+        );
+        query.setParameter("param", autore);
+        System.out.println("LISTA LIBRI PUBBLICATI DA" + autore + ": " + query.getResultList());
+        return query.getResultList();
+    }
+
+
 }

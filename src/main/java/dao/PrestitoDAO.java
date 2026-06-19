@@ -1,9 +1,12 @@
 package dao;
 
+import entities.Elemento;
 import entities.Prestito;
 import exception.NotFoundException;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
+
+import java.util.List;
 
 public class PrestitoDAO {
     private final EntityManager entityManager;
@@ -39,5 +42,10 @@ public class PrestitoDAO {
         this.entityManager.remove(fromDB);
         transaction.commit();
         System.out.println("il prestito " + fromDB + "è stato rimosso dal DB");
+    }
+
+    // ricerca elementi in prestito da numero di tessera
+    public List<Elemento> elementoInPrestitoPerTessera(String tessera) {
+        
     }
 }
